@@ -4,7 +4,10 @@ var submitBtn = document.querySelector("#submitBtn");
 
 //base API URL
 var baseUrlWeather = "https://api.openweathermap.org/data/2.5/forecast?";
-var baseUrlCity = "http://api.openweathermap.org/geo/1.0/direct?"
+var baseUrlCity = "http://api.openweathermap.org/geo/1.0/direct?q="
+
+var limitCities = 5;
+
 
 // API key
 var apiKey = "appid=81400ac056ac2215ad92e79b9c4185bb";
@@ -25,3 +28,4 @@ function getApi(requestUrl) {
         console.log(data);
       });
   }
+
