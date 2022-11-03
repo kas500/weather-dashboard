@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+    <header class="col-12 text-center p-5 border">
+        <h1>Weather Dashboard</h1>
+    </header>
+
+    <div class="row m-4 border">
+        <div id="searchDiv" class="col-4 border ">
+            <form action="submit d-flex flex-column">
+                <label for="searchField" class="control-label mx-3 my-0">Search for a City</label>
+                <input type="text" class="m-3" name="searchField" id="searchField" placeholder="City">
+                <input type="submit" class="mx-3">
+            </form>
+            
+        </div>
+        <div id="forecastDiv" class=" col-8 d-flex flex-column">
+            <div class="col-12 d-flex flex-column border row">
+                <span id="currentCity">City <span id="currentDate">(current date)</span></span>
+                <span id="currentTemp">Temp</span>
+                <span id="currentWind">Wind</span>
+                <span id="currentHum">Humidity</span>
+            <div class="row m-2 border my-5">
+                <div id="day1" class="col-2 border">1</div>
+                <div id="day2" class="col-2 border">2</div>
+                <div id="day3" class="col-2 border">3</div>
+                <div id="day4" class="col-2 border">4</div>
+                <div id="day5" class="col-2 border">5</div>
+            </div>
+            </div>
+            
+            
+        </div>
+    </div>
+    
+</body>
+</html>
