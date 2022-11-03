@@ -37,8 +37,9 @@ async function getWeatherCurrent(requestUrl) {
     const responce = await fetch(requestUrl);
     return await responce.json()
       .then(function (data) {
-        document.querySelector("#currentCity").textContent = data.name+", "+state +"("+today.format("MM/DD/YYYY")+")";
-        console.log(data);
+        document.querySelector("#currentCity").innerHTML = data.name+", "+state 
+        +" ("+today.format("MM/DD/YYYY h:mm a")+") <img src='http://openweathermap.org/img/w/"
+        + data.weather[0].icon + ".png' alt='"+data.weather[0].description+"'>";
         document.querySelector("#currentTemp").textContent = "Temp: " + data.main.temp + " ℉";
         document.querySelector("#currentWind").textContent = "Wind: " + data.wind.speed + " MPH";
         document.querySelector("#currentHum").textContent = "Humidity: " + data.main.humidity + " %";
@@ -60,6 +61,4 @@ submitBtn.addEventListener("click", async function(ev){
     await getCoordinates(baseUrlCity+searchField.value+"&limit="+limitCities+"&"+apiKey);
     await getWeatherCurrent(baseUrlCurrentWeather+coordinates+"&"+apiKey+"&"+units);
     await getWeatherForecast(baseUrlWeatherForecast+coordinates+"&"+apiKey);
-
-
 });
