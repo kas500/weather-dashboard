@@ -63,7 +63,7 @@ async function getWeatherForecast(requestUrl) {
         document.querySelector(".card-title2").textContent=data.list[11].dt_txt;
         document.querySelector("#card2 li:nth-child(1)").textContent = "Temp: " + Math.floor(data.list[11].main.temp)+ " ℉";
         document.querySelector("#card2 li:nth-child(2)").textContent = "Wind: " + data.list[11].wind.speed + " MPH";
-        document.querySelector("#card3 li:nth-child(3)").textContent = "Humidity: " + data.list[11].main.humidity + " %";
+        document.querySelector("#card2 li:nth-child(3)").textContent = "Humidity: " + data.list[11].main.humidity + " %";
         //day3
         document.querySelector("#card3 img").setAttribute("src","http://openweathermap.org/img/w/"+ data.list[19].weather[0].icon + ".png");
         document.querySelector(".card-title3").textContent=data.list[19].dt_txt;
@@ -91,4 +91,13 @@ submitBtn.addEventListener("click", async function(ev){
     await getCoordinates(baseUrlCity+searchField.value+"&limit="+limitCities+"&"+apiKey);
     await getWeatherCurrent(baseUrlCurrentWeather+coordinates+"&"+apiKey+"&"+units);
     await getWeatherForecast(baseUrlWeatherForecast+coordinates+"&"+apiKey+"&"+units);
+    searchField.value = "";
 });
+
+async function init(){
+    await getCoordinates(baseUrlCity+"Seattle"+"&limit="+limitCities+"&"+apiKey);
+    await getWeatherCurrent(baseUrlCurrentWeather+coordinates+"&"+apiKey+"&"+units);
+    await getWeatherForecast(baseUrlWeatherForecast+coordinates+"&"+apiKey+"&"+units);
+}
+
+init();
