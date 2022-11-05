@@ -114,4 +114,11 @@ function addToLocalStorage(city){
   localStorage.setItem("cities",JSON.stringify(citiesArr));
 }
 
+function removeFromLocalStorage(city){
+  var citiesArr = JSON.parse(localStorage.getItem("cities"));
+  return citiesArr.filter(function(el){
+    return el !=city;
+  });
+}
+
 init();
