@@ -56,7 +56,6 @@ async function getWeatherForecast(requestUrl) {
     const responce = await fetch(requestUrl);
     return await responce.json()
       .then(function (data) {
-        console.log(data);
         //day1
         document.querySelector("#card1 img").setAttribute("src","http://openweathermap.org/img/w/"+ data.list[3].weather[0].icon + ".png");
         document.querySelector(".card-title1").textContent=data.list[3].dt_txt.substring(0,10);
