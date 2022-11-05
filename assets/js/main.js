@@ -7,6 +7,9 @@ var citiesOptions = document.querySelector("input");
 var coordinates ="";
 var state = "";
 
+//array of cities for search history
+var citiesArr = [];
+
 //current date
 var today = moment();
 
@@ -91,6 +94,7 @@ submitBtn.addEventListener("click", async function(ev){
     await getCoordinates(baseUrlCity+searchField.value+"&limit="+limitCities+"&"+apiKey);
     await getWeatherCurrent(baseUrlCurrentWeather+coordinates+"&"+apiKey+"&"+units);
     await getWeatherForecast(baseUrlWeatherForecast+coordinates+"&"+apiKey+"&"+units);
+    addToLocalStorage(searchField.value);
     searchField.value = "";
 });
 
@@ -98,6 +102,16 @@ async function init(){
     await getCoordinates(baseUrlCity+"Seattle"+"&limit="+limitCities+"&"+apiKey);
     await getWeatherCurrent(baseUrlCurrentWeather+coordinates+"&"+apiKey+"&"+units);
     await getWeatherForecast(baseUrlWeatherForecast+coordinates+"&"+apiKey+"&"+units);
+}
+
+
+//add data to local storage
+function addToLocalStorage(city){
+  citiesArr = (JSON.parse(localStorage.getItem("cities")) != null) ? JSON.parse(localStorage.getItem("cities")):[];
+  if(!(citiesArr.some(element => element  === city))){
+      citiesArr.push(city);
+   }
+  localStorage.setItem("cities",JSON.stringify(citiesArr));
 }
 
 init();
