@@ -2,6 +2,7 @@
 var searchField = document.querySelector("#searchField");
 var submitBtn = document.querySelector("#submitBtn");
 var citiesOptions = document.querySelector("input");
+var listOfSavedCities = document.querySelector("ul");
 
 
 var coordinates ="";
@@ -102,6 +103,14 @@ async function init(){
     await getCoordinates(baseUrlCity+"Seattle"+"&limit="+limitCities+"&"+apiKey);
     await getWeatherCurrent(baseUrlCurrentWeather+coordinates+"&"+apiKey+"&"+units);
     await getWeatherForecast(baseUrlWeatherForecast+coordinates+"&"+apiKey+"&"+units);
+    
+    citiesArr = (JSON.parse(localStorage.getItem("cities")) != null) ? JSON.parse(localStorage.getItem("cities")):[];
+    citiesArr.forEach(element => {
+      var liEl = document.createElement("li");
+      liEl.textContent = element;
+      liEl.setAttribute("class", " text-center my-3 btn btn-secondary btn-block");
+      listOfSavedCities.appendChild(liEl);
+    });
 }
 
 
