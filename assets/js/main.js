@@ -98,6 +98,7 @@ async function showMeWeather(city){
 }
 
 
+//list of cities event listener
 listOfSavedCities.addEventListener("click",function(ev){
   cityName = ev.target.textContent;
   citiesArr = JSON.parse(localStorage.getItem("cities"));
@@ -108,6 +109,7 @@ listOfSavedCities.addEventListener("click",function(ev){
   showMeWeather(cityName);
 })
 
+// submit button event listener
 submitBtn.addEventListener("click", async function(ev){
     ev.stopPropagation();
     ev.preventDefault();
@@ -139,6 +141,7 @@ function removeFromLocalStorage(city){
   
 }
 
+// update list of previous cities
 function updateListOfSavedCities(){
   listOfSavedCities.innerHTML = "";
   citiesArr = (JSON.parse(localStorage.getItem("cities")) != null) ? JSON.parse(localStorage.getItem("cities")):[];
