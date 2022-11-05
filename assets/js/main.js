@@ -112,11 +112,15 @@ listOfSavedCities.addEventListener("click",function(ev){
 submitBtn.addEventListener("click", async function(ev){
     ev.stopPropagation();
     ev.preventDefault();
-    cityName = searchField.value;
-    showMeWeather(cityName);
-    addToLocalStorage(cityName);
-    searchField.value = "";
-    updateListOfSavedCities();
+    if(searchField.value != ""){
+      cityName = searchField.value;
+      showMeWeather(cityName);
+      addToLocalStorage(cityName);
+      searchField.value = "";
+      updateListOfSavedCities();
+    }
+    else alert("Enter city name!");
+    
 });
 
 //init function
