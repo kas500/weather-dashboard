@@ -7,6 +7,7 @@ var listOfSavedCities = document.querySelector("ul");
 
 var coordinates ="";
 var state = "";
+var cityName = "";
 
 //array of cities for search history
 var citiesArr = [];
@@ -58,59 +59,70 @@ async function getWeatherForecast(requestUrl) {
         console.log(data);
         //day1
         document.querySelector("#card1 img").setAttribute("src","http://openweathermap.org/img/w/"+ data.list[3].weather[0].icon + ".png");
-        document.querySelector(".card-title1").textContent=data.list[3].dt_txt;
+        document.querySelector(".card-title1").textContent=data.list[3].dt_txt.substring(0,10);
         document.querySelector("#card1 li:nth-child(1)").textContent = "Temp: " + Math.floor(data.list[3].main.temp)+ " ℉";
         document.querySelector("#card1 li:nth-child(2)").textContent = "Wind: " + data.list[3].wind.speed + " MPH";
         document.querySelector("#card1 li:nth-child(3)").textContent = "Humidity: " + data.list[3].main.humidity + " %";
         //day2
         document.querySelector("#card2 img").setAttribute("src","http://openweathermap.org/img/w/"+ data.list[11].weather[0].icon + ".png");
-        document.querySelector(".card-title2").textContent=data.list[11].dt_txt;
+        document.querySelector(".card-title2").textContent=data.list[11].dt_txt.substring(0,10);
         document.querySelector("#card2 li:nth-child(1)").textContent = "Temp: " + Math.floor(data.list[11].main.temp)+ " ℉";
         document.querySelector("#card2 li:nth-child(2)").textContent = "Wind: " + data.list[11].wind.speed + " MPH";
         document.querySelector("#card2 li:nth-child(3)").textContent = "Humidity: " + data.list[11].main.humidity + " %";
         //day3
         document.querySelector("#card3 img").setAttribute("src","http://openweathermap.org/img/w/"+ data.list[19].weather[0].icon + ".png");
-        document.querySelector(".card-title3").textContent=data.list[19].dt_txt;
+        document.querySelector(".card-title3").textContent=data.list[19].dt_txt.substring(0,10);
         document.querySelector("#card3 li:nth-child(1)").textContent = "Temp: " + Math.floor(data.list[19].main.temp)+ " ℉";
         document.querySelector("#card3 li:nth-child(2)").textContent = "Wind: " + data.list[19].wind.speed + " MPH";
         document.querySelector("#card3 li:nth-child(3)").textContent = "Humidity: " + data.list[19].main.humidity + " %";
         //day4
         document.querySelector("#card4 img").setAttribute("src","http://openweathermap.org/img/w/"+ data.list[27].weather[0].icon + ".png");
-        document.querySelector(".card-title4").textContent=data.list[27].dt_txt;
+        document.querySelector(".card-title4").textContent=data.list[27].dt_txt.substring(0,10);
         document.querySelector("#card4 li:nth-child(1)").textContent = "Temp: " + Math.floor(data.list[27].main.temp)+ " ℉";
         document.querySelector("#card4 li:nth-child(2)").textContent = "Wind: " + data.list[27].wind.speed + " MPH";
         document.querySelector("#card4 li:nth-child(3)").textContent = "Humidity: " + data.list[27].main.humidity + " %";
         //day5
         document.querySelector("#card5 img").setAttribute("src","http://openweathermap.org/img/w/"+ data.list[35].weather[0].icon + ".png");
-        document.querySelector(".card-title5").textContent=data.list[35].dt_txt;
+        document.querySelector(".card-title5").textContent=data.list[35].dt_txt.substring(0,10);
         document.querySelector("#card5 li:nth-child(1)").textContent = "Temp: " + Math.floor(data.list[35].main.temp)+ " ℉";
         document.querySelector("#card5 li:nth-child(2)").textContent = "Wind: " + data.list[35].wind.speed + " MPH";
         document.querySelector("#card5 li:nth-child(3)").textContent = "Humidity: " + data.list[35].main.humidity + " %";
       });
 }
 
+//show me weather
+async function showMeWeather(city){
+  await getCoordinates(baseUrlCity+city+"&limit="+limitCities+"&"+apiKey);
+  await getWeatherCurrent(baseUrlCurrentWeather+coordinates+"&"+apiKey+"&"+units);
+  await getWeatherForecast(baseUrlWeatherForecast+coordinates+"&"+apiKey+"&"+units);
+}
+
+
+listOfSavedCities.addEventListener("click",function(ev){
+  cityName = ev.target.textContent;
+  citiesArr = JSON.parse(localStorage.getItem("cities"));
+  var indexToRemove = citiesArr.indexOf(cityName);
+  citiesArr.splice(indexToRemove,1);
+  localStorage.setItem("cities",JSON.stringify(citiesArr));
+  updateListOfSavedCities();
+  showMeWeather(cityName);
+})
+
 submitBtn.addEventListener("click", async function(ev){
     ev.stopPropagation();
     ev.preventDefault();
-    await getCoordinates(baseUrlCity+searchField.value+"&limit="+limitCities+"&"+apiKey);
-    await getWeatherCurrent(baseUrlCurrentWeather+coordinates+"&"+apiKey+"&"+units);
-    await getWeatherForecast(baseUrlWeatherForecast+coordinates+"&"+apiKey+"&"+units);
-    addToLocalStorage(searchField.value);
+    cityName = searchField.value;
+    showMeWeather(cityName);
+    addToLocalStorage(cityName);
     searchField.value = "";
+    updateListOfSavedCities();
 });
 
+//init function
 async function init(){
-    await getCoordinates(baseUrlCity+"Seattle"+"&limit="+limitCities+"&"+apiKey);
-    await getWeatherCurrent(baseUrlCurrentWeather+coordinates+"&"+apiKey+"&"+units);
-    await getWeatherForecast(baseUrlWeatherForecast+coordinates+"&"+apiKey+"&"+units);
-    
-    citiesArr = (JSON.parse(localStorage.getItem("cities")) != null) ? JSON.parse(localStorage.getItem("cities")):[];
-    citiesArr.forEach(element => {
-      var liEl = document.createElement("li");
-      liEl.textContent = element;
-      liEl.setAttribute("class", " text-center my-3 btn btn-secondary btn-block");
-      listOfSavedCities.appendChild(liEl);
-    });
+    cityName = "Seattle";
+    showMeWeather(cityName);
+    updateListOfSavedCities();
 }
 
 
@@ -124,9 +136,17 @@ function addToLocalStorage(city){
 }
 
 function removeFromLocalStorage(city){
-  var citiesArr = JSON.parse(localStorage.getItem("cities"));
-  return citiesArr.filter(function(el){
-    return el !=city;
+  
+}
+
+function updateListOfSavedCities(){
+  listOfSavedCities.innerHTML = "";
+  citiesArr = (JSON.parse(localStorage.getItem("cities")) != null) ? JSON.parse(localStorage.getItem("cities")):[];
+  citiesArr.forEach(element => {
+    var liEl = document.createElement("li");
+    liEl.textContent = element;
+    liEl.setAttribute("class", " text-center my-3 btn btn-secondary btn-block");
+    listOfSavedCities.appendChild(liEl);
   });
 }
 
